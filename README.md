@@ -40,6 +40,6 @@ $
 
 **UPDATED:** Please see our new [developer documentation](https://github.com/att-comdev/openstack-helm/blob/master/docs/developer/minikube.md) for Minikube.
 
-# Additional Details here
+# Additional Details
 
 For additional details, and instructions on how to use this project, please see the [wiki](https://github.com/att-comdev/openstack-helm/wiki) for more details.
