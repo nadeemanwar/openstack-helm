@@ -17,7 +17,7 @@ spec:
   template:
     metadata:
       labels:
-        app: cinder-scheduler
+      app: cinder-scheduler
       annotations:
         configmap-bin-hash: {{ tuple "configmap-bin.yaml" . | include "hash" }}
         configmap-etc-hash: {{ tuple "configmap-etc.yaml" . | include "hash" }}
