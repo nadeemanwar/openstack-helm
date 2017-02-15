@@ -12,7 +12,7 @@ spec:
         app: heat-api
       annotations:
         pod.beta.kubernetes.io/init-containers: '[
-{{ tuple $envAll $dependencies | include "dep-check-init-cont" | indent 10 }}
+{{ tuple $envAll $dependencies | include "helm-toolkit.kubernetes_entrypoint_init_container" | indent 10 }}
         ]'
     spec:
       nodeSelector:
@@ -21,6 +21,15 @@ spec:
         - name: heat-api
           image: {{ .Values.images.api }}
           imagePullPolicy: {{ .Values.images.pull_policy }}
+          {{- if .Values.resources.enabled }}
+          resources:
+            requests:
+              memory: {{ .Values.resources.heat_api.requests.memory | quote }}
+              cpu: {{ .Values.resources.heat_api.requests.cpu | quote }}
+            limits:
+              memory: {{ .Values.resources.heat_api.limits.memory | quote }}
+              cpu: {{ .Values.resources.heat_api.limits.cpu | quote }}
+          {{- end }}
           command:
             - heat-api
             - --config-dir

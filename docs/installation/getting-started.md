@@ -190,11 +190,17 @@ Please ensure that you have verified and completed the steps above to prevent is
 Although Ceph is mentioned throughout this guide, our deployment is flexible to allow you the option of bringing any type of persistent storage. Although most of these verification steps are the same, if not very similar, we will use Ceph as our example throughout this guide.
 
 ## Node Labels
-First, we must label our nodes according to their role. Although we are labeling `all` nodes, you are free to label only the nodes you wish. You must have at least one, although a minimum of three are recommended.
+First, we must label our nodes according to their role. Although we are labeling `all` nodes, you are free to label only the nodes you wish. You must have at least one, although a minimum of three are recommended. Nodes are labeled according to their Openstack roles:
+
+**Storage Nodes:** `ceph-storage`
+**Control Plane:** `openstack-control-plane`
+**Compute Nodes:** `openvswitch`, `openstack-compute-node`
 
 ```
 admin@kubenode01:~$ kubectl label nodes openstack-control-plane=enabled --all
 admin@kubenode01:~$ kubectl label nodes ceph-storage=enabled --all
+admin@kubenode01:~$ kubectl label nodes openvswitch=enabled --all
+admin@kubenode01:~$ kubectl label nodes openstack-compute-node=enabled --all
 ```
 
 ## Obtaining the Project
@@ -225,6 +231,13 @@ admin@kubenode01:~$ cd common/utils/secret-generator
 admin@kubenode01:~$ ./generate_secrets.sh all `./generate_secrets.sh fsid`
 admin@kubenode01:~$ cd ../../..
 ```
+
+## Nova Compute Instance Storage
+Nova Compute requires a place to store instances locally.  Each node labeled `openstack-compute-node` needs to have the following directory:
+```
+admin@kubenode01:~$ mkdir -p /var/lib/nova/instances
+```
+*Repeat this step for each node labeled: `openstack-compute-node`*
 
 ## Helm Preparation
 Now we need to install and prepare Helm, the core of our project. Please use the installation guide from the [Kubernetes/Helm](https://github.com/kubernetes/helm/blob/master/docs/install.md#from-the-binary-releases) repository. Please take note of our required versions above.
@@ -262,7 +275,7 @@ Please ensure that you use ``--purge`` whenever deleting a project.
 ## Ceph Installation and Verification
 Install the first service, which is Ceph. If all instructions have been followed as mentioned above, this installation should go smoothly. Use the following command to install Ceph:
 ```
-admin@kubenode01:~$ helm install --name=ceph local/ceph --namespace=ceph
+admin@kubenode01:~$ helm install --set network.public=$osd_public_network --name=ceph local/ceph --namespace=ceph
 ```
 
 ## Bootstrap Installation
@@ -320,7 +333,7 @@ The parameters is what we're looking for here. If we see parameters passed to th
 ### Ceph Validation
 Most commonly, we want to validate that Ceph is working correctly. This can be done with the following ceph command:
 ```
-admin@kubenode01:~$ kubectl exec -t -i ceph-mon-392438295-6q04c -n ceph -- ceph status
+admin@kubenode01:~$ kubectl exec -t -i ceph-mon-0 -n ceph -- ceph status
     cluster 046de582-f8ee-4352-9ed4-19de673deba0
      health HEALTH_OK
      monmap e3: 3 mons at {ceph-mon-392438295-6q04c=10.25.65.131:6789/0,ceph-mon-392438295-ksrb2=10.25.49.196:6789/0,ceph-mon-392438295-l0pzj=10.25.79.193:6789/0}
@@ -333,7 +346,23 @@ admin@kubenode01:~$ kubectl exec -t -i ceph-mon-392438295-6q04c -n ceph -- ceph 
                   80 active+clean
 admin@kubenode01:~$
 ```
-Use one of your Ceph Monitors to check the status of the cluster. A couple of things to note above; our health is 'HEALTH_OK', we have 3 mons, we've established a quorum, and we can see that our active mds is 'ceph-mds-2810413505-gtjgv'. We have a healthy environment, and are ready to install our next chart, MariaDB.
+Use one of your Ceph Monitors to check the status of the cluster. A couple of things to note above; our health is 'HEALTH_OK', we have 3 mons, we've established a quorum, and we can see that our active mds is 'ceph-mds-2810413505-gtjgv'. We have a healthy environment.
+
+For Glance and Cinder to operate, you will need to create some storage pools for these systems.   Additionally, Nova can be configured to use a pool as well, but this is off by default.
+
+```
+kubectl exec -n ceph -it ceph-mon-0 ceph osd pool create volumes 128
+kubectl exec -n ceph -it ceph-mon-0 ceph osd pool create images 128
+```
+ 
+Nova storage would be added like this:
+```
+kubectl exec -n ceph -it ceph-mon-0 ceph osd pool create vms 128
+```
+
+The choosing the amount of storage is up to you and can be changed by replacing the 128 to meet your needs.
+
+We are now ready to install our next chart, MariaDB.
 
 ## MariaDB Installation and Verification
 We are using Galera to cluster MariaDB and establish a quorum. To install the MariaDB, issue the following command:

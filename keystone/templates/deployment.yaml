@@ -1,5 +1,5 @@
 {{- $envAll := . }}
-{{- $dependecies := .Values.dependencies.api }}
+{{- $dependencies := .Values.dependencies.api }}
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -19,10 +19,10 @@ spec:
       labels:
         app: keystone-api
       annotations:
-        configmap-bin-hash: {{ tuple "configmap-bin.yaml" . | include "hash" }}
-        configmap-etc-hash: {{ tuple "configmap-etc.yaml" . | include "hash" }}
+        configmap-bin-hash: {{ tuple "configmap-bin.yaml" . | include "helm-toolkit.hash" }}
+        configmap-etc-hash: {{ tuple "configmap-etc.yaml" . | include "helm-toolkit.hash" }}
         pod.beta.kubernetes.io/init-containers: '[
-{{ tuple $envAll $dependecies | include "dep-check-init-cont" | indent 10 }}
+{{ tuple $envAll $dependencies | include "helm-toolkit.kubernetes_entrypoint_init_container" | indent 10 }}
         ]'
     spec:
       nodeSelector:
@@ -31,6 +31,15 @@ spec:
         - name: keystone-api
           image: {{ .Values.images.api }}
           imagePullPolicy: {{ .Values.images.pull_policy }}
+          {{- if .Values.resources.enabled }}
+          resources:
+            limits:
+              cpu: {{ .Values.resources.api.limits.cpu | quote }}
+              memory: {{ .Values.resources.api.limits.memory | quote }}
+            requests:
+              cpu: {{ .Values.resources.api.requests.cpu | quote }}
+              memory: {{ .Values.resources.api.requests.memory | quote }}
+          {{- end }}
           command:
             - bash
             - /tmp/start.sh
