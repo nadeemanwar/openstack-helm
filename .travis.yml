@@ -18,6 +18,11 @@ install:
   - cd helm && make bootstrap build
   - mv bin/helm $HOME/bin
 
+env:
+  - CHART=common-0.1.0.tgz
+  - CHART=glance-0.1.0.tgz
+  - CHART=cinder-0.1.0.tgz
+
 script:
   - cd $TRAVIS_BUILD_DIR
   - bash travis-ci/kubeadm_setup.sh  
@@ -30,4 +35,4 @@ script:
   - helm repo add local http://localhost:8879/charts
   - helm repo update
   - make
-  - bash travis-ci/charts_dry_run.sh
+  - bash travis-ci/charts_dry_run.sh $CHART
