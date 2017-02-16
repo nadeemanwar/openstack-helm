@@ -10,8 +10,5 @@ for chart in *.tgz; do
   else
     echo "No Error found for dry run checking for gotpl"
     grep gotpl /tmp/dry-run-output.log || true
-    cat /tmp/dry-run-output.log
-  else
-    grep gotpl /tmp/dry-run-output.log
   fi
 done
