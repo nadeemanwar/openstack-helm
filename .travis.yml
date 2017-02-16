@@ -35,4 +35,4 @@ script:
   - helm repo add local http://localhost:8879/charts
   - helm repo update
   - make
-  - bash travis-ci/charts_dry_run.sh $CHART
+  - bash travis-ci/chart_dry_run.sh $CHART
