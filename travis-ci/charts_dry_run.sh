@@ -13,7 +13,7 @@ for chart in *.tgz; do
     echo "No Error found for dry run checking for gotpl"
     if [ `grep gotpl /tmp/dry-run-output.log | wc -l` -ne 0 ]; 
     then
-      echo ("Found gotpl, setting the status to 1 and printing the log") 
+      echo "Found gotpl, setting the status to 1 and printing the log" 
       status=1;
       cat /tmp/dry-run-output.log 
     fi
