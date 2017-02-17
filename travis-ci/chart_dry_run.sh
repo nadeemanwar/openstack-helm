@@ -9,7 +9,8 @@ status=0;
     cat /tmp/dry-run-output.log
     status=$?;
   else
-    echo "No Error found for dry run checking for gotpl"
+    echo "No Error found for dry run checking other errors listed below"
+    cat travis-ci/errors.list
     if [ `egrep -f travis-ci/errors.list /tmp/dry-run-output.log | wc -l` -ne 0 ]; 
     then
       echo "Found errors, setting the status to 1 and printing the log" 

@@ -19,8 +19,10 @@ install:
   - mv bin/helm $HOME/bin
 
 env:
-  - CHART=common-0.1.0.tgz
-  - CHART=glance-0.1.0.tgz
+  - CHART=helm-toolkit-0.1.0.tgz
+  - CHART=heat-0.1.0.tgz
+  - CHART=openstack-0.1.0.tgz
+  - CHART=keystone-0.1.0.tgz
   - CHART=cinder-0.1.0.tgz
 
 script:
