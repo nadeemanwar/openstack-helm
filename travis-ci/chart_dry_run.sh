@@ -5,9 +5,9 @@ status=0;
   helm install --dry-run --debug local/$1 2>&1 > /tmp/dry-run-output.log
   if [ $? -ne 0 ];
   then
-    echo "Found error printing the log"
+    echo "Found error printing the log with error code $?"
     cat /tmp/dry-run-output.log
-    status=$?;
+    status=1;
   else
     echo "No Error found for dry run checking other errors listed below"
     cat travis-ci/errors.list

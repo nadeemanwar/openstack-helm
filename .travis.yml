@@ -27,7 +27,7 @@ env:
   - CHART=openstack
 
 script:
-  - export CHART_VERSION=0.1.0
+  - export CHART_VERSION=`cat version | tr -d ' '| tr -d '\n'`
   - cd $TRAVIS_BUILD_DIR
   - bash travis-ci/kubeadm_setup.sh  
   - $GOPATH/src/k8s.io/helm/bin/tiller &
