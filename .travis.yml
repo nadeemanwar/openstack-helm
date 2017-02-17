@@ -19,14 +19,15 @@ install:
   - mv bin/helm $HOME/bin
 
 env:
-  - CHART=ceph-0.1.0.tgz
-  - CHART=postgresql-0.1.0.tgz
-  - CHART=keystone-0.1.0.tgz
-  - CHART=cinder-0.1.0.tgz
-  - CHART=heat-0.1.0.tgz
-  - CHART=openstack-0.1.0.tgz
+  - CHART=ceph
+  - CHART=postgresql
+  - CHART=keystone
+  - CHART=cinder
+  - CHART=heat
+  - CHART=openstack
 
 script:
+  - export CHART_ VERSION=0.1.0
   - cd $TRAVIS_BUILD_DIR
   - bash travis-ci/kubeadm_setup.sh  
   - $GOPATH/src/k8s.io/helm/bin/tiller &
@@ -38,4 +39,4 @@ script:
   - helm repo add local http://localhost:8879/charts
   - helm repo update
   - make
-  - bash travis-ci/chart_dry_run.sh $CHART
+  - bash travis-ci/chart_dry_run.sh "$CHART-$CHART_VERSION.tgz"
