@@ -31,3 +31,7 @@ script:
   - helm repo update
   - make
   - bash travis-ci/charts_dry_run.sh
+
+after_failure:
+  - echo "Printing error log if any"
+  - cat /tmp/dry-run-errors.log
