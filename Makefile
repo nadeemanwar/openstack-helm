@@ -1,12 +1,26 @@
-.PHONY: ceph bootstrap mariadb postgresql keystone memcached rabbitmq helm-toolkit openstack neutron nova cinder heat maas all clean
+# Copyright 2017 The Openstack-Helm Authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+.PHONY: ceph bootstrap mariadb etcd postgresql keystone memcached rabbitmq helm-toolkit openstack neutron nova cinder heat maas all clean
 
 B64_DIRS := helm-toolkit/secrets
 B64_EXCLUDE := $(wildcard helm-toolkit/secrets/*.b64)
 
-CHARTS := ceph mariadb postgresql rabbitmq memcached keystone glance horizon neutron nova cinder heat maas openstack
+CHARTS := ceph mariadb etcd postgresql rabbitmq memcached keystone glance horizon neutron nova cinder heat maas openstack
 TOOLKIT_TPL := helm-toolkit/templates/_globals.tpl
 
-all: helm-toolkit ceph bootstrap mariadb postgresql rabbitmq memcached keystone glance horizon neutron nova cinder heat maas openstack
+all: helm-toolkit ceph bootstrap mariadb etcd postgresql rabbitmq memcached keystone glance horizon neutron nova cinder heat maas openstack
 
 helm-toolkit: build-helm-toolkit
 
@@ -16,6 +30,8 @@ ceph: build-ceph
 bootstrap: build-bootstrap
 
 mariadb: build-mariadb
+
+etcd: build-etcd
 
 postgresql: build-postgresql
 
