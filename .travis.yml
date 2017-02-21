@@ -18,6 +18,24 @@ install:
   - cd helm && make bootstrap build
   - mv bin/helm $HOME/bin
 
+env:
+  - CHART=helm-toolkit
+  - CHART=ceph
+  - CHART=bootstrap
+  - CHART=mariadb
+  - CHART=postgresql
+  - CHART=rabbitmq
+  - CHART=memcached
+  - CHART=keystone
+  - CHART=glance
+  - CHART=horizon
+  - CHART=neutron
+  - CHART=nova
+  - CHART=cinder
+  - CHART=heat
+  - CHART=maas
+  - CHART=openstack
+
 script:
   - cd $TRAVIS_BUILD_DIR
   - bash travis-ci/kubeadm_setup.sh  
@@ -30,4 +48,6 @@ script:
   - helm repo add local http://localhost:8879/charts
   - helm repo update
   - make
-  - bash travis-ci/charts_dry_run.sh
+  - export CHART_VERSION=$(cat version | tr -d ' '| tr -d '\n')
+  - echo $CHART_VERSION
+  - bash travis-ci/chart_dry_run.sh "$CHART-$CHART_VERSION.tgz"
