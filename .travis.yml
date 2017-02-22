@@ -33,8 +33,9 @@ script:
   - bash travis-ci/charts_dry_run.sh
 
 after_failure:
-  - echo "Printing error log and warning log if any"
+  - echo "Printing error log if any"
   - cat /tmp/dry-run-errors.log
+  - echo "Printing warning log if any"
   - cat /tmp/dry-run-warnings.log
 
 after_success:
