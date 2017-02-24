@@ -35,15 +35,20 @@ for chart in *.tgz; do
   else
     echo "Install Successful, checking for template issues"
     #cat travis-ci/errors.list
-    if [ `egrep -f travis-ci/errors.list /tmp/dry-run-output.log | wc -l` -ne 0 ]; 
+    if [ -s travis-ci/errors.list ]
     then
-      echo "ERROR: Found errors, setting the status to 1 and printing the log" 
-      status=1;
-      (( failed_charts++ )) 
-      egrep -f travis-ci/errors.list /tmp/dry-run-output.log >> /tmp/dry-run-errors.log
-     # cat /tmp/dry-run-output.log >> /tmp/dry-run-errors.log
+      (( successful_charts++ )) 
     else
+      if [ `egrep -f travis-ci/errors.list /tmp/dry-run-output.log | wc -l` -ne 0 ]; 
+      then
+        echo "ERROR: Found errors, setting the status to 1 and printing the log" 
+        status=1;
+        (( failed_charts++ )) 
+        egrep -f travis-ci/errors.list /tmp/dry-run-output.log >> /tmp/dry-run-errors.log
+        # cat /tmp/dry-run-output.log >> /tmp/dry-run-errors.log
+      else
        (( successful_charts++ )) 
+      fi
     fi
     echo "Checking warning issues with the templates"
     #cat travis-ci/warnings.list
