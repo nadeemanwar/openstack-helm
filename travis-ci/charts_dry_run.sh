@@ -28,7 +28,7 @@ for chart in *.tgz; do
   helm install --dry-run --debug local/$chart 2>&1 > /tmp/dry-run-output.log
   if [ $? -ne 0 ];
   then
-    echo "Found error and setting status to 1"
+    echo "ERROR: Found error and setting status to 1"
     cat /tmp/dry-run-output.log >> /tmp/dry-run-errors.log
     status=1;
     (( failed_charts++ )) 
@@ -37,7 +37,7 @@ for chart in *.tgz; do
     #cat travis-ci/errors.list
     if [ `egrep -f travis-ci/errors.list /tmp/dry-run-output.log | wc -l` -ne 0 ]; 
     then
-      echo "Found errors, setting the status to 1 and printing the log" 
+      echo "ERROR: Found errors, setting the status to 1 and printing the log" 
       status=1;
       (( failed_charts++ )) 
       egrep -f travis-ci/errors.list /tmp/dry-run-output.log >> /tmp/dry-run-errors.log
@@ -57,12 +57,10 @@ for chart in *.tgz; do
  fi
 done
 echo "==============================================================="
-echo ""
 echo "Total charts = $total_charts"
 echo "Successful chart Install = $successful_charts"
 echo "Failed Charts Install = $failed_charts"
 echo "Charts Installed with warnings = $charts_with_warning"
-echo ""
 echo "==============================================================="
 
 exit $status

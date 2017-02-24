@@ -14,6 +14,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-docker run -it -e quay.io/attcomdev/kubeadm-ci:v1.1.0 --name kubeadm-ci --privileged=true -d --net=host --security-opt seccomp:unconfined --cap-add=SYS_ADMIN -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v /var/run/docker.sock:/var/run/docker.sock quay.io/attcomdev/kubeadm-ci:v1.1.0 /sbin/init
+status=0
+docker run -it -e quay.io/attcomdev/kubeadm-ci:v1.1.0 --name kubeadm-ci --privileged=true -d --net=host --security-opt seccomp:unconfined --cap-add=SYS_ADMIN -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v /var/run/docker.sock:/var/run/docker.sock quay.io/attcomdev/kubeadm-ci:v1.1.0 /sbin/init  2>&1 > /tmp/docker-run-output.log
+if [ $? -ne 0 ];
+then
+  echo "ERROR:  Found error, setting status to 1 printing the log"
+  cat /tmp/docker-run-output.log 
+  status=1;
+else
+  echo "docker started successfully"
+fi
 
-docker exec kubeadm-ci kubeadm.sh
+docker exec kubeadm-ci kubeadm.sh 2>&1 > /tmp/docker-run-output.log
+if [ $? -ne 0 ];
+then
+  echo "ERROR: Found error, setting status to 1 and printing the log"
+  cat /tmp/docker-run-output.log
+  status=1;
+else
+  echo "kubeadm.sh script ran successfully"
+fi
+
+exit $status

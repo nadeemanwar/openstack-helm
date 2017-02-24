@@ -1,2 +1,1 @@
-no template "nova/templates/etc/_ceph.client.cinder.keyring.yaml.tpl" associated with template "gotpl"
-no template "helm_toolkit.template" associated with template "gotpl"
+
