@@ -23,7 +23,7 @@ compile:
 
 deployment:
   production:
-    branch:circlecitest
+    branch: circlecitest
       commands:
         - cd $HOME
         - bash travis-ci/kubeadm_setup.sh  
