@@ -21,7 +21,7 @@ compile:
     - cd helm && make bootstrap build
     - mv bin/helm $HOME/bin
 
-deployment :
+deployment:
   commands:
     - cd $HOME
     - bash travis-ci/kubeadm_setup.sh  
