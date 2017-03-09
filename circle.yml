@@ -8,6 +8,8 @@ machine:
  
   pre:
     - go env 
+    - ls /use/local/go_workspace
+    - ls /home/ubuntu/.go_project/src/github.com/nadeemanwar/openstack-helm
     - ls $GOPATH/src/
     - wget "https://github.com/Masterminds/glide/releases/download/$GLIDE_VERSION/glide-$GLIDE_VERSION-linux-amd64.tar.gz"
     - mkdir -p $HOME/bin
