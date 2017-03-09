@@ -1,7 +1,7 @@
 machine:
 
   services:
-    docker
+    - docker
 
   environment:
     GLIDE_VERSION: v0.12.3
