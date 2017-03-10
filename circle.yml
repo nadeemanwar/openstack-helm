@@ -35,6 +35,7 @@ dependencies:
     - cd "${WORKDIR}" && make bootstrap
 
     - go env
+    - docker version
     - echo $HOME
     - echo $GOPATH
     - echo $GLIDE_HOME 
