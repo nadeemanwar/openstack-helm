@@ -28,7 +28,7 @@ compile:
     - mkdir -p $HOME/bin
     - tar -vxz -C $HOME/bin --strip=1 -f glide-v0.12.3-linux-amd64.tar.gz
 #    - export PATH="$HOME/bin:$PATH" GLIDE_HOME="$HOME/.glide"
-    - cd $GOPATH/src/
+    - cd /home/ubuntu/.go_workspace/src/
     - mkdir k8s.io && cd k8s.io
     - git clone https://github.com/kubernetes/helm
     - pwd
