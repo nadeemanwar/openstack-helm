@@ -54,7 +54,8 @@ deployment:
     branch: circlecitest
     commands:
       - cd $HOME
-      - bash travis-ci/kubeadm_setup.sh  
+      - ls -al
+      - bash circle-ci/kubeadm_setup.sh  
       - $GOPATH/src/k8s.io/helm/bin/tiller &
       - export HELM_HOST=localhost:44134
       - helm init --client-only
@@ -64,4 +65,4 @@ deployment:
       - helm repo add local http://localhost:8879/charts
       - helm repo update
       - make
-      - bash travis-ci/charts_dry_run.sh
+      - bash circle-ci/charts_dry_run.sh
