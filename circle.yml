@@ -24,6 +24,7 @@ dependencies:
     - wget "https://storage.googleapis.com/golang/go${GOVERSION}.linux-amd64.tar.gz" -O "${HOME}/go${GOVERSION}.tar.gz"
     - sudo tar -C /usr/local -xzf "${HOME}/go${GOVERSION}.tar.gz"
 
+    - git clone https://github.com/kubernetes/helm
     # move repository to the canonical import path
     - mkdir -p "$(dirname ${WORKDIR})"
     - cp -R "${HOME}/helm" "${WORKDIR}"
@@ -39,8 +40,8 @@ dependencies:
     - mkdir -p $HOME/bin
     - tar -vxz -C $HOME/bin --strip=1 -f glide-v0.12.3-linux-amd64.tar.gz
 #    - cd /home/ubuntu/.go_workspace/src/
-    - mkdir k8s.io && cd k8s.io
-    - git clone https://github.com/kubernetes/helm
+#    - mkdir k8s.io && cd k8s.io
+#    - git clone https://github.com/kubernetes/helm
     - pwd
 #    - cd helm && make bootstrap build
 #    - mv bin/helm $HOME/bin
