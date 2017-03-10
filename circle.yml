@@ -23,8 +23,10 @@ dependencies:
     # install go
     - wget "https://storage.googleapis.com/golang/go${GOVERSION}.linux-amd64.tar.gz" -O "${HOME}/go${GOVERSION}.tar.gz"
     - sudo tar -C /usr/local -xzf "${HOME}/go${GOVERSION}.tar.gz"
-    - cd $HOME
-    - git clone https://github.com/kubernetes/helm
+#    - cd $HOME
+    - pwd 
+    - cd $HOME && git clone https://github.com/kubernetes/helm
+    - ls
     # move repository to the canonical import path
     - mkdir -p "$(dirname ${WORKDIR})"
     - cp -R "${HOME}/helm" "${WORKDIR}"
