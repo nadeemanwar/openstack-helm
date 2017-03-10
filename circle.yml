@@ -5,6 +5,7 @@ machine:
 
   environment:
     GLIDE_VERSION: v0.12.3
+    GLIDE_HOME: $HOME/.glide
  
 #  pre:
 #    - go env 
@@ -18,14 +19,14 @@ machine:
 
 compile:
   override:
-    - go env 
-#    - ls -al /home/ubuntu/.go_project/src/github.com/nadeemanwar/openstack-helm
-#    - ls $GOPATH/src/
+    - go env
+    - echo $HOME
+    - echo $GLIDE_HOME 
     - wget "https://github.com/Masterminds/glide/releases/download/$GLIDE_VERSION/glide-$GLIDE_VERSION-linux-amd64.tar.gz"
 #    - wget "https://github.com/Masterminds/glide/releases/download/v0.12.3/glide-v0.12.3-linux-amd64.tar.gz"
     - mkdir -p $HOME/bin
     - tar -vxz -C $HOME/bin --strip=1 -f glide-v0.12.3-linux-amd64.tar.gz
-    - export PATH="$HOME/bin:$PATH" GLIDE_HOME="$HOME/.glide"
+#    - export PATH="$HOME/bin:$PATH" GLIDE_HOME="$HOME/.glide"
 #    - cd $GOPATH/src/
     - mkdir k8s.io && cd k8s.io
     - git clone https://github.com/kubernetes/helm
