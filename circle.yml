@@ -21,6 +21,7 @@ compile:
   override:
     - go env
     - echo $HOME
+    - echo $GOPATH
     - echo $GLIDE_HOME 
     - wget "https://github.com/Masterminds/glide/releases/download/$GLIDE_VERSION/glide-$GLIDE_VERSION-linux-amd64.tar.gz"
 #    - wget "https://github.com/Masterminds/glide/releases/download/v0.12.3/glide-v0.12.3-linux-amd64.tar.gz"
@@ -30,6 +31,7 @@ compile:
 #    - cd $GOPATH/src/
     - mkdir k8s.io && cd k8s.io
     - git clone https://github.com/kubernetes/helm
+    - pwd
     - cd helm && make bootstrap build
     - mv bin/helm $HOME/bin
 
