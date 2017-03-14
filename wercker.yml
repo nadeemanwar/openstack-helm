@@ -50,7 +50,7 @@ build:
           
           echo $WERCKER_ROOT
           ls -al $WERCKER_ROOT
-          cd /pipeline/build
+          cd $WERCKER_ROOT 
           bash travis-ci/kubeadm_setup.sh  
           $GOPATH/src/k8s.io/helm/bin/tiller &
           export HELM_HOST=localhost:44134
