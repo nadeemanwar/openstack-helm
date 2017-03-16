@@ -1,0 +1,69 @@
+version: 2
+machine:
+
+  services:
+    - docker
+
+  environment:
+    GLIDE_VERSION: v0.12.3
+    GLIDE_HOME: $HOME/.glide
+    GOVERSION: "1.7.4"
+    GOPATH:  "${HOME}/.go_workspace"
+    WORKDIR: "${GOPATH}/src/k8s.io/helm"
+ 
+dependencies:
+  cache_directories:
+    - "~/.glide"
+
+  pre:
+     # remove old go files
+    - sudo rm -rf /usr/local/go
+    - rm -rf "$GOPATH"
+ 
+  override:
+    # install go
+    - wget "https://storage.googleapis.com/golang/go${GOVERSION}.linux-amd64.tar.gz" -O "${HOME}/go${GOVERSION}.tar.gz"
+    - sudo tar -C /usr/local -xzf "${HOME}/go${GOVERSION}.tar.gz"
+#    - cd $HOME
+    - pwd 
+    - cd $HOME && git clone https://github.com/kubernetes/helm
+    - ls
+    # move repository to the canonical import path
+    - mkdir -p "$(dirname ${WORKDIR})"
+    - cp -R "${HOME}/helm" "${WORKDIR}"
+
+    # install dependencies
+    - cd "${WORKDIR}" && make bootstrap
+
+    - go env
+    - docker version
+    - echo $HOME
+    - echo $GOPATH
+    - echo $GLIDE_HOME 
+    - wget "https://github.com/Masterminds/glide/releases/download/$GLIDE_VERSION/glide-$GLIDE_VERSION-linux-amd64.tar.gz"
+    - mkdir -p $HOME/bin
+    - tar -vxz -C $HOME/bin --strip=1 -f glide-v0.12.3-linux-amd64.tar.gz
+#    - cd /home/ubuntu/.go_workspace/src/
+#    - mkdir k8s.io && cd k8s.io
+#    - git clone https://github.com/kubernetes/helm
+    - pwd
+#    - cd helm && make bootstrap build
+#    - mv bin/helm $HOME/bin
+
+deployment:
+  production:
+    branch: circlecitest
+    commands:
+      - cd $HOME
+      - ls -al
+      - bash circle-ci/kubeadm_setup.sh  
+      - $GOPATH/src/k8s.io/helm/bin/tiller &
+      - export HELM_HOST=localhost:44134
+      - helm init --client-only
+      - helm version
+      - helm serve &
+      - sleep 1m
+      - helm repo add local http://localhost:8879/charts
+      - helm repo update
+      - make
+      - bash circle-ci/charts_dry_run.sh
