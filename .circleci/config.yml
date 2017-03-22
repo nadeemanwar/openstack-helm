@@ -1,6 +1,7 @@
 version: 2
 jobs:
   build:
+    working_directory: ~/openstack_helm
     machine:
       enabled: true
 
