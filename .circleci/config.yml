@@ -61,7 +61,7 @@ jobs:
       - run:
           name: Test
           command: |
-            cd $HOME
+            cd $HOME/openstack_helm
             pwd
             ls -al
             bash circle-ci/kubeadm_setup.sh  
