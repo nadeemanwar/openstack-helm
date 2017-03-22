@@ -62,6 +62,7 @@ jobs:
           name: Test
           command: |
             cd $HOME
+            pwd
             ls -al
             bash circle-ci/kubeadm_setup.sh  
             $GOPATH/src/k8s.io/helm/bin/tiller &
