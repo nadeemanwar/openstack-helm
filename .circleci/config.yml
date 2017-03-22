@@ -19,6 +19,7 @@ jobs:
           name: Clean up
           command: |
             echo ${HOME}
+            echo ${GOPATH}
             # remove old go files
             sudo rm -rf /usr/local/go
             rm -rf "$GOPATH"
