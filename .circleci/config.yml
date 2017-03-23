@@ -10,7 +10,7 @@ jobs:
         - GLIDE_HOME: $HOME/.glide
         - GOVERSION: "1.7.4"
         - GOPATH:  "/home/circleci/.go_workspace"
-        - WORKDIR: "${GOPATH}/src/k8s.io/helm"
+        - WORKDIR: "/home/circleci/.go_workspace/src/k8s.io/helm"
  
     steps:
       - checkout 
