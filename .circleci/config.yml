@@ -63,27 +63,21 @@ jobs:
             wget "https://github.com/Masterminds/glide/releases/download/$GLIDE_VERSION/glide-$GLIDE_VERSION-linux-amd64.tar.gz"
             mkdir -p $HOME/bin
             tar -vxz -C $HOME/bin --strip=1 -f glide-v0.12.3-linux-amd64.tar.gz
-            #    - cd /home/ubuntu/.go_workspace/src/
-            #    - mkdir k8s.io && cd k8s.io
-            #    - git clone https://github.com/kubernetes/helm
-            pwd
-            #    - cd helm && make bootstrap build
-            #    - mv bin/helm $HOME/bin
 
       - run:
-          name: Test
+          name: Helm charts dryrun  
           command: |
             cd $HOME/openstack_helm
             pwd
             ls -al
-            bash travis-ci/kubeadm_setup.sh  
+            bash circle-ci/kubeadm_setup.sh  
             ${WORKDIR}/bin/tiller &
             export HELM_HOST=localhost:44134
-            ${WORKDIR}/bin/helm init --client-only
-            ${WORKDIR}/bin/helm version
-            ${WORKDIR}/bin/helm serve &
+            helm init --client-only
+            helm version
+            helm serve &
             sleep 1m
-            ${WORKDIR}/bin/helm repo add local http://localhost:8879/charts
-            ${WORKDIR}/bin/helm repo update
+            helm repo add local http://localhost:8879/charts
+            helm repo update
             make
             bash circle-ci/charts_dry_run.sh
