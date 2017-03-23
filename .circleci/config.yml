@@ -53,7 +53,7 @@ jobs:
             ls -al ${WORKDIR}
             echo "The Helm Bin dir is "
             ls -al ${WORKDIR}/bin
-            cp -R "${WORKDIR}/bin" "${GOPATH}/bin"
+            cp -R "${WORKDIR}/bin/*" "${GOPATH}/bin"
             ls -al ${GOPATH}/bin/*
             go env
             docker version
