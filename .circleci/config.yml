@@ -47,7 +47,7 @@ jobs:
           name: install dependencies 
           command: |
             # install dependencies
-            cd "${WORKDIR}" && make bootstrap
+            cd "${WORKDIR}" && make bootstrap build
             echo "The workdir is "
             ls -al ${WORKDIR}
             echo "The Helm Bin dir is "
