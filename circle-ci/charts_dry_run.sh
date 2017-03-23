@@ -17,7 +17,7 @@
 status=0
 for chart in *.tgz; do
   echo "Running helm install --dry-run --debug on $chart";
-  helm install --dry-run --debug local/$chart 2>&1 > /tmp/dry-run-output.log
+  ${WORKDIR}/bin/helm install --dry-run --debug local/$chart 2>&1 > /tmp/dry-run-output.log
   if [ $? -ne 0 ];
   then
     echo "Found error printing the log"

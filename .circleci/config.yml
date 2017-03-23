@@ -18,6 +18,7 @@ jobs:
       - run:
           name: Clean up
           command: |
+            echo $PATH
             echo ${HOME}
             echo ${GOPATH}
             echo ${WORKDIR}
