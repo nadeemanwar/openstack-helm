@@ -20,6 +20,7 @@ jobs:
           command: |
             echo ${HOME}
             echo ${GOPATH}
+            echo ${WORKDIR}
             # remove old go files
             sudo rm -rf /usr/local/go
             rm -rf "$GOPATH"
