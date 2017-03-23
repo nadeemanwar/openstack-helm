@@ -37,7 +37,10 @@ jobs:
             ls
             # move repository to the canonical import path
             mkdir -p "$(dirname ${WORKDIR})"
+            pwd
+            ls -al
             cp -R "${HOME}/helm" "${WORKDIR}"
+            ls -al ${WORKDIR}
 
       - run:
           name: install dependencies 
