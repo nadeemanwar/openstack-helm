@@ -42,7 +42,7 @@ jobs:
             cp -R "${HOME}/helm" "${WORKDIR}"
             echo "The wordir is "
             ls -al ${WORKDIR}
-            ehco "The Helm Bin dir is "
+            echo "The Helm Bin dir is "
             ls -al ${WORKDIR}/bin
 
       - run:
