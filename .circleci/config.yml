@@ -76,11 +76,11 @@ jobs:
             bash travis-ci/kubeadm_setup.sh  
             ${WORKDIR}/bin/tiller &
             export HELM_HOST=localhost:44134
-            helm init --client-only
-            helm version
-            helm serve &
+            ${WORKDIR}/bin/helm init --client-only
+            ${WORKDIR}/bin/helm version
+            ${WORKDIR}/bin/helm serve &
             sleep 1m
-            helm repo add local http://localhost:8879/charts
-            helm repo update
+            ${WORKDIR}/bin/helm repo add local http://localhost:8879/charts
+            ${WORKDIR}/bin/helm repo update
             make
             bash circle-ci/charts_dry_run.sh
