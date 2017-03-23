@@ -27,7 +27,7 @@ jobs:
             rm -rf "$GOPATH"
 
       - run:
-          name: install go and helm
+          name: install go and checkout helm
           command: | 
             # install go
             wget "https://storage.googleapis.com/golang/go${GOVERSION}.linux-amd64.tar.gz" -O "${HOME}/go${GOVERSION}.tar.gz"
@@ -45,7 +45,7 @@ jobs:
             ls -al ${WORKDIR}
 
       - run:
-          name: install dependencies 
+          name: install helm and glade 
           command: |
             # install dependencies
             cd "${WORKDIR}" && make bootstrap build
