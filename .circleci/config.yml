@@ -39,8 +39,8 @@ jobs:
             mkdir -p "$(dirname ${WORKDIR})"
             pwd
             ls -al
-            cp -R "${HOME}/helm" "${WORKDIR}"
-            echo "The wordir is "
+            cp -R "${HOME}/helm" "/home/circleci/.go_workspace/src/k8s.io/helm"
+            echo "The workdir is "
             ls -al ${WORKDIR}
             echo "The Helm Bin dir is "
             ls -al ${WORKDIR}/bin
